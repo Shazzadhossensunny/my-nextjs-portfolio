@@ -40,7 +40,7 @@ const Footer = () => {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
           className="h-5 w-5"
         >

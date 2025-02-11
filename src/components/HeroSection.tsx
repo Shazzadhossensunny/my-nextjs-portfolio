@@ -45,7 +45,7 @@ const HeroSection = () => {
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     stroke-linejoin="round"
                     className="lucide lucide-github"
                   >
@@ -68,7 +68,7 @@ const HeroSection = () => {
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     stroke-linejoin="round"
                     className="lucide lucide-linkedin"
                   >
