@@ -1,3 +1,4 @@
+import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 
 export default function commonLayout({
@@ -9,6 +10,7 @@ export default function commonLayout({
     <main>
       <Navbar />
       <div className="min-h-screen">{children}</div>
+      <Footer />
     </main>
   );
 }
