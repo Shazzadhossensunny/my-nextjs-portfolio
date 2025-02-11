@@ -1,41 +1,78 @@
 "use client";
 import { motion } from "framer-motion";
-import { Download } from "lucide-react";
+import { Download, Code, Laptop, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
+  const technologies = ["React", "Next.js", "Tailwind CSS", "TypeScript"];
+
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative z-10"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">
-                Frontend Developer
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="mb-4"
+            >
+              <span className="px-4 py-2 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-800 dark:text-violet-200 text-sm font-medium">
+                Welcome to my portfolio
               </span>
-              <br />
-              Building Digital Experiences
+            </motion.div>
+
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Hey, I'm{" "}
+              <span className="bg-gradient-to-r from-violet-600 to-indigo-600 text-transparent bg-clip-text">
+                Shazzad Hossen
+              </span>
             </h1>
+
+            <div className="flex items-center gap-2 mb-6">
+              <Code className="h-5 w-5 text-violet-600" />
+              <p className="text-xl text-gray-700 dark:text-gray-300 font-medium">
+                Frontend Developer
+              </p>
+            </div>
+
             <p className="text-gray-600 dark:text-gray-300 text-lg mb-8">
-              Crafting beautiful and functional web applications with modern
-              technologies. Specialized in React, Next.js, and responsive
-              design.
+              Passionate about crafting exceptional web experiences with modern
+              technologies. Specializing in building responsive, performant, and
+              user-friendly applications.
             </p>
+
+            <div className="flex flex-wrap gap-2 mb-8">
+              {technologies.map((tech, index) => (
+                <motion.span
+                  key={tech}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="px-3 py-1 rounded-full bg-white dark:bg-gray-800 shadow-sm text-sm font-medium"
+                >
+                  {tech}
+                </motion.span>
+              ))}
+            </div>
+
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+              <Button size="lg" className="bg-violet-600 hover:bg-violet-700">
                 <Download className="mr-2 h-4 w-4" /> Download Resume
               </Button>
+
               <div className="flex gap-4">
                 <motion.a
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   href="#"
                   target="_blank"
-                  className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full"
+                  className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:shadow-lg transition-shadow"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +84,7 @@ const HeroSection = () => {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="lucide lucide-github"
+                    className="text-gray-700 dark:text-gray-300"
                   >
                     <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
                     <path d="M9 18c-4.51 2-5-2-7-2" />
@@ -58,7 +95,7 @@ const HeroSection = () => {
                   whileTap={{ scale: 0.9 }}
                   href="#"
                   target="_blank"
-                  className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full"
+                  className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:shadow-lg transition-shadow"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +107,7 @@ const HeroSection = () => {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="lucide lucide-linkedin"
+                    className="text-gray-700 dark:text-gray-300"
                   >
                     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                     <rect width="4" height="12" x="2" y="9" />
@@ -87,15 +124,35 @@ const HeroSection = () => {
             transition={{ duration: 0.5 }}
             className="relative"
           >
-            <div className="w-full h-[500px] rounded-2xl overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm"></div>
+            <div className="w-full h-[500px] rounded-3xl overflow-hidden relative shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-500/20 to-indigo-500/20 backdrop-blur-sm"></div>
               <img
                 src="/api/placeholder/600/500"
-                alt="Profile"
+                alt="Shazzad Hossen"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"></div>
-              <div className="absolute -top-10 -left-10 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl"></div>
+              <motion.div
+                animate={{
+                  rotate: [0, 360],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                className="absolute -bottom-20 -right-20 w-80 h-80 bg-violet-500/10 rounded-full blur-3xl"
+              />
+              <motion.div
+                animate={{
+                  rotate: [360, 0],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                className="absolute -top-20 -left-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl"
+              />
             </div>
           </motion.div>
         </div>
