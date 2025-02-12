@@ -1,3 +1,4 @@
+import DashboardProvider from "@/components/DashboardProvider";
 import Sidebar from "@/components/shared/Sidebar";
 import { getUserProfile } from "@/components/shared/UserProfile";
 
@@ -8,8 +9,10 @@ export default async function dashboardLayout({
 }>) {
   const userProfile = await getUserProfile();
   return (
-    <div>
-      <Sidebar userProfile={userProfile}>{children}</Sidebar>
-    </div>
+    <DashboardProvider>
+      <div>
+        <Sidebar userProfile={userProfile}>{children}</Sidebar>
+      </div>
+    </DashboardProvider>
   );
 }
