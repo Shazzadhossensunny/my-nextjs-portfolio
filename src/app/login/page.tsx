@@ -30,7 +30,11 @@ const LoginPage = () => {
             <Button
               variant="outline"
               className="w-full bg-white/10 hover:bg-white/20 text-white border-white/20"
-              //   onClick={() => {}}
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: "http://localhost:3000/dashboard",
+                })
+              }
             >
               <Mail className="mr-2 h-4 w-4" />
               Continue with Google
