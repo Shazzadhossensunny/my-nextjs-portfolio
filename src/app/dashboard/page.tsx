@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { motion } from "framer-motion";
 import {
   Eye,
@@ -28,6 +27,8 @@ import {
 } from "recharts";
 
 const DashboardHome = () => {
+  // const session = await getServerSession(authOptions);
+  // console.log(session);
   // Sample data for charts
   const viewsData = [
     { name: "Jan", views: 400 },

@@ -1,6 +1,5 @@
-// components/shared/Sidebar.tsx
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
@@ -15,12 +14,21 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { signOut } from "next-auth/react";
+
+interface UserProfile {
+  name: string;
+  email: string;
+  image: string;
+}
 
 interface SidebarProps {
   children?: React.ReactNode;
+  userProfile: UserProfile;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ children }) => {
+const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -49,9 +57,13 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     },
   ];
 
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Mobile Overlay */}
+      {/* Rest of the overlay and sidebar structure remains the same */}
       <AnimatePresence>
         {isSidebarOpen && (
           <motion.div
@@ -64,7 +76,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 z-50 h-full w-64 bg-white dark:bg-gray-800 shadow-xl lg:shadow-none transform transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
@@ -100,7 +111,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             </ul>
           </nav>
 
-          {/* Profile */}
+          {/* Profile Section */}
           <div className="border-t dark:border-gray-700 p-4">
             <div className="relative">
               <Button
@@ -109,10 +120,25 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
               >
                 <div className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                    <User className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  {userProfile.image ? (
+                    <Image
+                      src={userProfile.image}
+                      alt={userProfile.name}
+                      width={32}
+                      height={32}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                      <User className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                    </div>
+                  )}
+                  <div className="ml-3 text-left">
+                    <p className="text-sm font-medium">{userProfile.name}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                      {userProfile.email}
+                    </p>
                   </div>
-                  <span className="ml-3">John Doe</span>
                 </div>
                 <ChevronDown
                   className={`h-4 w-4 transition-transform ${
@@ -132,6 +158,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                     <Button
                       variant="ghost"
                       className="w-full justify-start text-red-600 dark:text-red-400"
+                      onClick={handleLogout}
                     >
                       <LogOut className="h-4 w-4 mr-3" />
                       Logout
@@ -174,7 +201,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           </div>
         </header>
 
-        {/* Main Content Area with proper padding */}
         <main className="flex-1 container mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             {children}

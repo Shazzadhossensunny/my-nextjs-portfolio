@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import { signIn } from "next-auth/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,7 +39,11 @@ const LoginPage = () => {
             <Button
               variant="outline"
               className="w-full bg-white/10 hover:bg-white/20 text-white border-white/20"
-              //   onClick={() => {}}
+              onClick={() =>
+                signIn("github", {
+                  callbackUrl: "http://localhost:3000/dashboard",
+                })
+              }
             >
               <Github className="mr-2 h-4 w-4" />
               Continue with GitHub
