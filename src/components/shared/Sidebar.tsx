@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
   ];
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "/" });
+    await signOut();
   };
 
   return (

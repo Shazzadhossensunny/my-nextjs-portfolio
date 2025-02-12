@@ -1,12 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Menu, X, Moon, Sun } from "lucide-react";
+import { Menu, X, Moon, Sun, LogIn, LayoutDashboard } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { status } = useSession();
 
   const menuItems = [
     { title: "Home", href: "/" },
@@ -20,6 +23,29 @@ const Navbar = () => {
     closed: { opacity: 0, x: "100%" },
   };
 
+  const AuthButton = () => {
+    if (status === "authenticated") {
+      return (
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors"
+        >
+          <LayoutDashboard size={18} />
+          <span>Dashboard</span>
+        </Link>
+      );
+    }
+    return (
+      <Link
+        href="/login"
+        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors"
+      >
+        <LogIn size={18} />
+        <span>Login</span>
+      </Link>
+    );
+  };
+
   return (
     <nav className="fixed w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,32 +55,44 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex-shrink-0"
           >
-            <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">
+            <Link
+              href="/"
+              className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text"
+            >
               Portfolio
-            </span>
+            </Link>
           </motion.div>
 
           {/* Desktop Menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               {menuItems.map((item, index) => (
-                <motion.a
+                <motion.div
                   key={item.title}
-                  href={item.href}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 transition-colors"
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  {item.title}
-                </motion.a>
+                  <Link
+                    href={item.href}
+                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 transition-colors"
+                  >
+                    {item.title}
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Auth Button */}
+            <div className="hidden md:block">
+              <AuthButton />
+            </div>
+
+            {/* Theme Toggle */}
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800"
@@ -83,14 +121,20 @@ const Navbar = () => {
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {menuItems.map((item) => (
-            <a
+            <Link
               key={item.title}
               href={item.href}
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
+              onClick={() => setIsOpen(false)}
             >
               {item.title}
-            </a>
+            </Link>
           ))}
+
+          {/* Mobile Auth Button */}
+          <div className="px-3 py-2">
+            <AuthButton />
+          </div>
         </div>
       </motion.div>
     </nav>
