@@ -43,6 +43,13 @@ const blogApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Blog"],
     }),
+    deleteBlog: builder.mutation({
+      query: (id) => ({
+        url: `/blog/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Blog"],
+    }),
   }),
 });
 
@@ -50,4 +57,5 @@ export const {
   useCreateBlogMutation,
   useGetAllBlogQuery,
   useUpdateBlogMutation,
+  useDeleteBlogMutation,
 } = blogApi;

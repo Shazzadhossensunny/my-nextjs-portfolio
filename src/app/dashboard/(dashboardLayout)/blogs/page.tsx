@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/form";
 import { format } from "date-fns";
 import {
+  useDeleteBlogMutation,
   useGetAllBlogQuery,
   useUpdateBlogMutation,
 } from "@/redux/features/blogs/blogApi";
@@ -49,6 +50,7 @@ const BlogListPage = () => {
   const [selectedBlog, setSelectedBlog] = useState<TBlog | null>(null);
   const { data: blogData, isLoading } = useGetAllBlogQuery(undefined);
   const [updateBlog] = useUpdateBlogMutation();
+  const [deleteBlog] = useDeleteBlogMutation();
 
   const form = useForm<TBlog>({
     defaultValues: {
@@ -94,9 +96,24 @@ const BlogListPage = () => {
       }).unwrap();
 
       if (res.error) {
-        toast.error(res.error.data.message, { id: toastId });
+        toast.error(res?.error?.data.message, { id: toastId });
       } else {
         toast.success("Blog updated successfully", { id: toastId });
+        setIsEditModalOpen(false);
+      }
+    } catch (error) {
+      toast.error("Something went wrong!", { id: toastId });
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const toastId = toast.loading("Delete blog...");
+    try {
+      const res = (await deleteBlog(id)) as TResponse<TBlog>;
+      if (res.error) {
+        toast.error(res?.error?.data.message, { id: toastId });
+      } else {
+        toast.success("Blog delete successfully", { id: toastId });
         setIsEditModalOpen(false);
       }
     } catch (error) {
@@ -156,7 +173,10 @@ const BlogListPage = () => {
                         <Pencil className="h-4 w-4 mr-2" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer text-red-600 dark:text-red-400">
+                      <DropdownMenuItem
+                        className="cursor-pointer text-red-600 dark:text-red-400"
+                        onClick={() => handleDelete(blog._id)}
+                      >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete
                       </DropdownMenuItem>
@@ -168,7 +188,7 @@ const BlogListPage = () => {
           </TableBody>
         </Table>
       </div>
-
+      {/* update blog */}
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
