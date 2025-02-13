@@ -21,19 +21,19 @@ const projectApi = baseApi.injectEndpoints({
       },
       providesTags: ["Project"],
 
-      transformResponse: (response: TResponseRedux<TProject>) => {
+      transformResponse: (response: TResponseRedux<TProject[]>) => {
         return {
           data: response.data,
           meta: response.meta,
         };
       },
     }),
-    getSingleBlog: builder.query({
-      query: (idOrSlug) => ({
-        url: `/blog/${idOrSlug}`,
+    getSingleProject: builder.query({
+      query: (id) => ({
+        url: `/project/${id}`,
         method: "GET",
       }),
-      providesTags: ["Blog"],
+      providesTags: ["Project"],
     }),
     createProject: builder.mutation({
       query: (data) => ({
@@ -43,22 +43,28 @@ const projectApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Project"],
     }),
-    // updateBlog: builder.mutation({
-    //   query: (payload) => ({
-    //     url: `/blog/${payload.id}`,
-    //     method: "PATCH",
-    //     body: payload.data,
-    //   }),
-    //   invalidatesTags: ["Blog"],
-    // }),
-    // deleteBlog: builder.mutation({
-    //   query: (id) => ({
-    //     url: `/blog/${id}`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: ["Blog"],
-    // }),
+    updateProject: builder.mutation({
+      query: (payload) => ({
+        url: `/project/${payload.id}`,
+        method: "PATCH",
+        body: payload.data,
+      }),
+      invalidatesTags: ["Project"],
+    }),
+    deleteProject: builder.mutation({
+      query: (id) => ({
+        url: `/project/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Project"],
+    }),
   }),
 });
 
-export const { useCreateProjectMutation, useGetAllProjectQuery } = projectApi;
+export const {
+  useCreateProjectMutation,
+  useGetAllProjectQuery,
+  useGetSingleProjectQuery,
+  useUpdateProjectMutation,
+  useDeleteProjectMutation,
+} = projectApi;
