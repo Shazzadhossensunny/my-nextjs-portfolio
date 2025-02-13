@@ -1,176 +1,296 @@
 "use client";
+import { useState, useEffect } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { useCreateBlogMutation } from "@/redux/features/blogs/blogApi";
-import { TResponse } from "@/types/global.type";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { format } from "date-fns";
+import {
+  useGetAllBlogQuery,
+  useUpdateBlogMutation,
+} from "@/redux/features/blogs/blogApi";
+import { TBlog } from "@/types/blog.type";
+import { MoreVertical, Pencil, Trash2, Eye } from "lucide-react";
 import toast from "react-hot-toast";
+import { TResponse } from "@/types/global.type";
 
-export default function BlogForm() {
-  const [createBlog, { isLoading }] = useCreateBlogMutation();
+const BlogListPage = () => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState<TBlog | null>(null);
+  const { data: blogData, isLoading } = useGetAllBlogQuery(undefined);
+  const [updateBlog] = useUpdateBlogMutation();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
+  const form = useForm<TBlog>({
+    defaultValues: {
+      title: "",
+      date: new Date().toISOString().split("T")[0],
+      category: "",
+      readTime: 5,
+      image: "",
+      excerpt: "",
+      content: "",
+    },
+  });
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const blogData = {
-      ...data,
-      readTime: Number(data.readTime),
-    };
-    console.log(blogData);
-    try {
-      const res = (await createBlog(blogData)) as TResponse<FieldValues>;
-      if (res.error) {
-        toast.error(res?.data?.error.message);
-      } else {
-        toast.success("Blog create successfully");
-      }
-    } catch (error) {
-      toast.error("Something went wrong!");
-    }
-    reset();
+  const handleEdit = (blog: TBlog) => {
+    setSelectedBlog(blog);
+    form.reset({
+      title: blog.title,
+      date: new Date(blog.date).toISOString().split("T")[0],
+      category: blog.category,
+      readTime: blog.readTime,
+      image: blog.image,
+      excerpt: blog.excerpt,
+      content: blog.content,
+    });
+    setIsEditModalOpen(true);
   };
 
+  const handleUpdate: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Updating blog...");
+
+    try {
+      const res = await updateBlog({
+        id: selectedBlog?._id,
+        data: {
+          title: data.title,
+          date: data.date,
+          category: data.category,
+          readTime: data.readTime,
+          image: data.image,
+          excerpt: data.excerpt,
+          content: data.content,
+        },
+      }).unwrap();
+
+      if (res.error) {
+        toast.error(res.error.data.message, { id: toastId });
+      } else {
+        toast.success("Blog updated successfully", { id: toastId });
+        setIsEditModalOpen(false);
+      }
+    } catch (error) {
+      toast.error("Something went wrong!", { id: toastId });
+    }
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Title */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Title
-          </label>
-          <input
-            {...register("title", { required: "Title is required" })}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          />
-          {errors.title && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.title.message as string}
-            </p>
-          )}
-        </div>
-
-        {/* Date */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Date
-          </label>
-          <input
-            type="date"
-            {...register("date", { required: "Date is required" })}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          />
-          {errors.date && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.date.message as string}
-            </p>
-          )}
-        </div>
-
-        {/* Category and Read Time */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Category
-          </label>
-          <input
-            {...register("category", { required: "Category is required" })}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          />
-          {errors.category && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.category.message as string}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Read Time (minutes)
-          </label>
-          <input
-            type="number"
-            {...register("readTime", { required: "Read time is required" })}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          />
-          {errors.readTime && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.readTime.message as string}
-            </p>
-          )}
-        </div>
-
-        {/* Image URL and Slug */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Image URL
-          </label>
-          <input
-            {...register("image", { required: "Image URL is required" })}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          />
-          {errors.image && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.image.message as string}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Slug
-          </label>
-          <input
-            {...register("slug", { required: "Slug is required" })}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          />
-          {errors.slug && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.slug.message as string}
-            </p>
-          )}
-        </div>
-        {/* Excerpt */}
-        <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Excerpt
-          </label>
-          <textarea
-            {...register("excerpt", { required: "Excerpt is required" })}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            rows={3}
-          />
-          {errors.excerpt && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.excerpt.message as string}
-            </p>
-          )}
-        </div>
-
-        {/* Content */}
-        <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Content
-          </label>
-          <textarea
-            {...register("content")}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            rows={8}
-          />
-        </div>
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">All Blogs</h1>
       </div>
 
-      {/* Buttons */}
-      <div className="flex justify-end space-x-4">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-          {isLoading ? "Saving..." : "Save"}
-        </button>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Title</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Created</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {blogData?.data?.map((blog) => (
+              <TableRow key={blog._id}>
+                <TableCell>
+                  <div>
+                    <p className="font-medium">{blog.title}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {blog.excerpt}
+                    </p>
+                  </div>
+                </TableCell>
+                <TableCell>{blog.category}</TableCell>
+                <TableCell>
+                  {format(new Date(blog.createdAt), "MMM d, yyyy")}
+                </TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem className="cursor-pointer">
+                        <Eye className="h-4 w-4 mr-2" />
+                        View
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={() => handleEdit(blog)}
+                      >
+                        <Pencil className="h-4 w-4 mr-2" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer text-red-600 dark:text-red-400">
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
-    </form>
+
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Edit Blog Post</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleUpdate)}
+              className="space-y-6"
+            >
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="excerpt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Excerpt</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="readTime"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Read Time (minutes)</FormLabel>
+                      <FormControl>
+                        <Input type="number" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Category</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Image URL</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="content"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Content</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} className="min-h-[200px]" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="flex justify-end space-x-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsEditModalOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
-}
+};
+
+export default BlogListPage;

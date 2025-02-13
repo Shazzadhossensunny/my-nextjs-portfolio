@@ -1,4 +1,5 @@
 export type TBlog = {
+  _id: string;
   title: string;
   excerpt: string;
   date: string;
@@ -6,5 +7,8 @@ export type TBlog = {
   category: string;
   image: string;
   slug: string;
-  content?: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 };

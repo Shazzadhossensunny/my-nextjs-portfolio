@@ -12,10 +12,13 @@ import {
   Settings,
   LogOut,
   ChevronDown,
+  PlusCircle,
+  ListOrdered,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
+import { useRouter, usePathname } from "next/navigation";
 
 interface UserProfile {
   name: string;
@@ -28,34 +31,97 @@ interface SidebarProps {
   userProfile: UserProfile;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState("dashboard");
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  path?: string;
+  submenu?: {
+    id: string;
+    label: string;
+    path: string;
+    icon: React.ReactNode;
+  }[];
+}
 
-  const menuItems = [
-    { id: "dashboard", label: "Dashboard", icon: <Home className="h-5 w-5" /> },
+const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
+
+  const menuItems: MenuItem[] = [
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      icon: <Home className="h-5 w-5" />,
+      path: "/dashboard",
+    },
     {
       id: "blogs",
-      label: "Blog Posts",
+      label: "Blog Management",
       icon: <FileText className="h-5 w-5" />,
+      submenu: [
+        {
+          id: "create-blog",
+          label: "Create Blog",
+          path: "/dashboard/blogs/create",
+          icon: <PlusCircle className="h-4 w-4" />,
+        },
+        {
+          id: "blog-list",
+          label: "Blog List",
+          path: "/dashboard/blogs",
+          icon: <ListOrdered className="h-4 w-4" />,
+        },
+      ],
     },
     {
       id: "projects",
-      label: "Projects",
+      label: "Project Management",
       icon: <FolderOpen className="h-5 w-5" />,
+      submenu: [
+        {
+          id: "create-project",
+          label: "Create Project",
+          path: "/dashboard/projects/create",
+          icon: <PlusCircle className="h-4 w-4" />,
+        },
+        {
+          id: "project-list",
+          label: "Project List",
+          path: "/dashboard/projects",
+          icon: <ListOrdered className="h-4 w-4" />,
+        },
+      ],
     },
     {
       id: "messages",
-      label: "Messages",
+      label: "Message Management",
       icon: <MessageSquare className="h-5 w-5" />,
+      path: "/dashboard/messages",
     },
     {
       id: "settings",
       label: "Settings",
       icon: <Settings className="h-5 w-5" />,
+      path: "/dashboard/settings",
     },
   ];
+
+  const toggleSubmenu = (menuId: string) => {
+    setExpandedMenus((prev) =>
+      prev.includes(menuId)
+        ? prev.filter((id) => id !== menuId)
+        : [...prev, menuId]
+    );
+  };
+
+  const handleNavigation = (path: string) => {
+    router.push(path);
+    setIsSidebarOpen(false);
+  };
 
   const handleLogout = async () => {
     await signOut();
@@ -63,7 +129,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Rest of the overlay and sidebar structure remains the same */}
       <AnimatePresence>
         {isSidebarOpen && (
           <motion.div
@@ -82,36 +147,84 @@ const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Logo */}
           <div className="p-6 border-b dark:border-gray-700">
             <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">
               Dashboard
             </span>
           </div>
 
-          {/* Navigation */}
           <nav className="flex-1 overflow-y-auto p-4">
             <ul className="space-y-2">
               {menuItems.map((item) => (
                 <li key={item.id}>
-                  <Button
-                    variant={activeMenu === item.id ? "default" : "ghost"}
-                    className={`w-full justify-start ${
-                      activeMenu === item.id
-                        ? "bg-purple-600 text-white hover:bg-purple-700"
-                        : ""
-                    }`}
-                    onClick={() => setActiveMenu(item.id)}
-                  >
-                    {item.icon}
-                    <span className="ml-3">{item.label}</span>
-                  </Button>
+                  {item.submenu ? (
+                    <div className="space-y-2">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-between"
+                        onClick={() => toggleSubmenu(item.id)}
+                      >
+                        <div className="flex items-center">
+                          {item.icon}
+                          <span className="ml-3">{item.label}</span>
+                        </div>
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${
+                            expandedMenus.includes(item.id) ? "rotate-180" : ""
+                          }`}
+                        />
+                      </Button>
+                      <AnimatePresence>
+                        {expandedMenus.includes(item.id) && (
+                          <motion.ul
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="pl-6 space-y-2"
+                          >
+                            {item.submenu.map((subitem) => (
+                              <li key={subitem.id}>
+                                <Button
+                                  variant={
+                                    pathname === subitem.path
+                                      ? "default"
+                                      : "ghost"
+                                  }
+                                  className={`w-full justify-start text-sm ${
+                                    pathname === subitem.path
+                                      ? "bg-purple-600 text-white hover:bg-purple-700"
+                                      : ""
+                                  }`}
+                                  onClick={() => handleNavigation(subitem.path)}
+                                >
+                                  {subitem.icon}
+                                  <span className="ml-2">{subitem.label}</span>
+                                </Button>
+                              </li>
+                            ))}
+                          </motion.ul>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Button
+                      variant={pathname === item.path ? "default" : "ghost"}
+                      className={`w-full justify-start ${
+                        pathname === item.path
+                          ? "bg-purple-600 text-white hover:bg-purple-700"
+                          : ""
+                      }`}
+                      onClick={() => item.path && handleNavigation(item.path)}
+                    >
+                      {item.icon}
+                      <span className="ml-3">{item.label}</span>
+                    </Button>
+                  )}
                 </li>
               ))}
             </ul>
           </nav>
 
-          {/* Profile Section */}
           <div className="border-t dark:border-gray-700 p-4">
             <div className="relative">
               <Button
@@ -171,9 +284,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <div className="lg:pl-64 min-h-screen flex flex-col">
-        {/* Top Bar */}
         <header className="sticky top-0 z-40 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
           <div className="flex items-center justify-between p-4">
             <Button
