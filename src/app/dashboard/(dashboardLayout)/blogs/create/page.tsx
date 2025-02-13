@@ -19,7 +19,6 @@ export default function BlogForm() {
       ...data,
       readTime: Number(data.readTime),
     };
-    console.log(blogData);
     try {
       const res = (await createBlog(blogData)) as TResponse<FieldValues>;
       if (res.error) {
