@@ -1,13 +1,11 @@
 "use client";
-import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useCreateBlogMutation } from "@/redux/features/blogs/blogApi";
-import { useToast } from "@/hooks/use-toast";
 import { TResponse } from "@/types/global.type";
+import toast from "react-hot-toast";
 
 export default function BlogForm() {
   const [createBlog, { isLoading }] = useCreateBlogMutation();
-  const { toast } = useToast();
 
   const {
     register,
@@ -24,15 +22,13 @@ export default function BlogForm() {
     console.log(blogData);
     try {
       const res = (await createBlog(blogData)) as TResponse<FieldValues>;
-      if (res.success) {
-        toast({
-          description: "Blog create successfully",
-        });
+      if (res.error) {
+        toast.error(res?.data?.error.message);
+      } else {
+        toast.success("Blog create successfully");
       }
     } catch (error) {
-      toast({
-        description: "Something wen wrong",
-      });
+      toast.error("Something went wrong!");
     }
     reset();
   };
@@ -41,7 +37,7 @@ export default function BlogForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* Title */}
-        <div className="col-span-2">
+        <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
             Title
           </label>
@@ -56,19 +52,19 @@ export default function BlogForm() {
           )}
         </div>
 
-        {/* Excerpt */}
-        <div className="col-span-2">
+        {/* Date */}
+        <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-            Excerpt
+            Date
           </label>
-          <textarea
-            {...register("excerpt", { required: "Excerpt is required" })}
+          <input
+            type="date"
+            {...register("date", { required: "Date is required" })}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            rows={3}
           />
-          {errors.excerpt && (
+          {errors.date && (
             <p className="mt-1 text-sm text-red-500">
-              {errors.excerpt.message as string}
+              {errors.date.message as string}
             </p>
           )}
         </div>
@@ -132,6 +128,22 @@ export default function BlogForm() {
           {errors.slug && (
             <p className="mt-1 text-sm text-red-500">
               {errors.slug.message as string}
+            </p>
+          )}
+        </div>
+        {/* Excerpt */}
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+            Excerpt
+          </label>
+          <textarea
+            {...register("excerpt", { required: "Excerpt is required" })}
+            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            rows={3}
+          />
+          {errors.excerpt && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.excerpt.message as string}
             </p>
           )}
         </div>
