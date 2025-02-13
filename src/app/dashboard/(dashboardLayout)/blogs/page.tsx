@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -24,8 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+
 import {
   Form,
   FormControl,
@@ -44,6 +43,7 @@ import { TBlog } from "@/types/blog.type";
 import { MoreVertical, Pencil, Trash2, Eye } from "lucide-react";
 import toast from "react-hot-toast";
 import { TResponse } from "@/types/global.type";
+import Link from "next/link";
 
 const BlogListPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -162,10 +162,12 @@ const BlogListPage = () => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem className="cursor-pointer">
-                        <Eye className="h-4 w-4 mr-2" />
-                        View
-                      </DropdownMenuItem>
+                      <Link href={`/dashboard/blogs/${blog?._id}`}>
+                        <DropdownMenuItem className="cursor-pointer">
+                          <Eye className="h-4 w-4 mr-2" />
+                          View
+                        </DropdownMenuItem>
+                      </Link>
                       <DropdownMenuItem
                         className="cursor-pointer"
                         onClick={() => handleEdit(blog)}
