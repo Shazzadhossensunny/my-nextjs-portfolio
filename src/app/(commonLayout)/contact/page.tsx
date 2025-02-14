@@ -2,65 +2,82 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { sendMessageToUser } from "@/utils/actions/sendMessageUser";
+import { TResponse } from "@/types/global.type";
+import toast from "react-hot-toast";
 
-const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  subject: z.string().min(5, "Subject must be at least 5 characters"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
+export interface TMessageOnlyDataSend {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
 const ContactPage = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(formSchema),
-  });
-  const { toast } = useToast();
+  } = useForm();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data);
     try {
-      // Handle form submission
-      console.log(data);
-      toast({
-        title: "Message sent!",
-        description: "Thank you for your message. I'll get back to you soon.",
-      });
+      const res = await sendMessageToUser(data as TMessageOnlyDataSend);
+      if (res.success) {
+        toast(
+          <div className="flex items-center gap-2">
+            <CheckCircle className="text-green-500" size={24} />
+            <div>
+              <p className="font-semibold text-lg">Message Sent!</p>
+              <p className="text-sm text-gray-300">
+                We'll get back to you soon.
+              </p>
+            </div>
+          </div>,
+          {
+            style: {
+              background: "#1f2937",
+              color: "#ffffff",
+              border: "1px solid #4ade80",
+              padding: "12px",
+              borderRadius: "8px",
+            },
+            iconTheme: {
+              primary: "#4ade80",
+              secondary: "#ffffff",
+            },
+          }
+        );
+      }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
+      toast.error("Something went wrong!");
     }
+    reset();
   };
 
   const contactInfo = [
     {
       icon: <Mail className="h-6 w-6" />,
-      title: "Email",
-      details: "your.email@example.com",
-      link: "mailto:your.email@example.com",
+      title: "Gmail",
+      details: "shazzadhossensunny@gmail.com",
+      link: "mailto:shazzadhossensunny@gmail.com",
     },
     {
       icon: <Phone className="h-6 w-6" />,
       title: "Phone",
-      details: "+1 (234) 567-8900",
-      link: "tel:+12345678900",
+      details: "+8801831660652",
+      link: "tel:+8801831660652",
     },
     {
       icon: <MapPin className="h-6 w-6" />,
       title: "Location",
-      details: "San Francisco, CA",
+      details: "Uttara,Dhaka,Bangladesh",
       link: "https://maps.google.com",
     },
   ];

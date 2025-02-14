@@ -30,3 +30,15 @@ export type TQueryParam = {
   name: string;
   value: boolean | React.Key;
 };
+
+export type TMessage = {
+  _id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
