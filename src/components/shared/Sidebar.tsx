@@ -217,7 +217,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
                       onClick={() => item.path && handleNavigation(item.path)}
                     >
                       {item.icon}
-                      <span className="ml-3">{item.label}</span>
+                      <span className="ml-1">{item.label}</span>
                     </Button>
                   )}
                 </li>
