@@ -102,12 +102,12 @@ const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
       icon: <MessageSquare className="h-5 w-5" />,
       path: "/dashboard/messages",
     },
-    {
-      id: "settings",
-      label: "Settings",
-      icon: <Settings className="h-5 w-5" />,
-      path: "/dashboard/settings",
-    },
+    // {
+    //   id: "settings",
+    //   label: "Settings",
+    //   icon: <Settings className="h-5 w-5" />,
+    //   path: "/dashboard/settings",
+    // },
   ];
 
   const toggleSubmenu = (menuId: string) => {
@@ -229,32 +229,38 @@ const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
             <div className="relative">
               <Button
                 variant="ghost"
-                className="w-full justify-between"
+                className="w-full justify-between items-center relative"
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
               >
-                <div className="flex items-center">
+                <div className="flex items-center min-w-0 flex-1">
                   {userProfile.image ? (
-                    <Image
+                    <img
                       src={userProfile.image}
                       alt={userProfile.name}
-                      width={32}
-                      height={32}
-                      className="rounded-full"
+                      className="w-8 h-8 rounded-full flex-shrink-0"
                     />
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0">
                       <User className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                     </div>
                   )}
-                  <div className="ml-3 text-left">
-                    <p className="text-sm font-medium">{userProfile.name}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  <div className="ml-3 min-w-0 flex-1">
+                    <p
+                      className="text-sm font-medium truncate"
+                      title={userProfile.name} // This will show full name on hover
+                    >
+                      {userProfile.name}
+                    </p>
+                    <p
+                      className="text-xs text-gray-500 dark:text-gray-400 truncate"
+                      title={userProfile.email} // This will show full email on hover
+                    >
                       {userProfile.email}
                     </p>
                   </div>
                 </div>
                 <ChevronDown
-                  className={`h-4 w-4 transition-transform ${
+                  className={`h-4 w-4 transition-transform flex-shrink-0 ml-2 ${
                     isProfileOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -285,7 +291,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
       </aside>
 
       <div className="lg:pl-64 min-h-screen flex flex-col">
-        <header className="sticky top-0 z-40 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
+        <header className="sticky top-0 z-40 min-h-11 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
           <div className="flex items-center justify-between p-4">
             <Button
               variant="ghost"
@@ -299,16 +305,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
                 <Menu className="h-5 w-5" />
               )}
             </Button>
-
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm">
-                <MessageSquare className="h-4 w-4 mr-2" />
-                <span className="hidden sm:inline">Messages</span>
-                <span className="ml-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 px-2 py-0.5 rounded-full text-xs">
-                  3
-                </span>
-              </Button>
-            </div>
           </div>
         </header>
 
