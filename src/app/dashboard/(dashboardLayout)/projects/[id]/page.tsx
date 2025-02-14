@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { Calendar, Github, ExternalLink, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import LoadingPage from "../loading";
 
 export default function SingleProjectPage() {
   const params = useParams();
@@ -14,15 +15,7 @@ export default function SingleProjectPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
-  if (!projectData?.data) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <p>Project not found</p>
+        <LoadingPage />
       </div>
     );
   }

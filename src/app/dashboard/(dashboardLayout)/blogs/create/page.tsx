@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import LoadingPage from "../loading";
 
 export default function BlogForm() {
   const [createBlog, { isLoading }] = useCreateBlogMutation();
@@ -45,7 +46,13 @@ export default function BlogForm() {
     }
     reset();
   };
-
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <LoadingPage />
+      </div>
+    );
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <Card>

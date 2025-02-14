@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { Calendar, Clock } from "lucide-react";
+import LoadingPage from "../loading";
 
 export default function SingleBlogPage() {
   const params = useParams();
@@ -14,15 +15,7 @@ export default function SingleBlogPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
-  if (!blogData?.data) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <p>Blog not found</p>
+        <LoadingPage />
       </div>
     );
   }

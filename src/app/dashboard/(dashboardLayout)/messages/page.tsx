@@ -30,6 +30,7 @@ import {
   useMarkReadMessageMutation,
 } from "@/redux/features/messages/messageApi";
 import toast from "react-hot-toast";
+import LoadingPage from "./loading";
 
 type TMessage = {
   _id: string;
@@ -76,7 +77,7 @@ export default function MessagesListPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p>Loading...</p>
+        <LoadingPage />
       </div>
     );
   }

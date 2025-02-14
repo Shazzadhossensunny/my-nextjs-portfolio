@@ -29,6 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { TProject } from "@/types/project.type";
+import LoadingPage from "../loading";
 
 export default function ProjectForm() {
   const [createProject, { isLoading }] = useCreateProjectMutation();
@@ -88,6 +89,14 @@ export default function ProjectForm() {
       );
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <LoadingPage />
+      </div>
+    );
+  }
 
   return (
     <FormProvider {...methods}>

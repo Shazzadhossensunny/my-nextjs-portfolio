@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 export async function getUserProfile() {
   const session = await getServerSession(authOptions);
   return {
-    name: session?.user?.name || "Guest",
+    name: session?.user?.name || "",
     email: session?.user?.email || "",
     image: session?.user?.image || "",
   };
