@@ -28,7 +28,7 @@ const Footer = () => {
           <path d="M9 18c-4.51 2-5-2-7-2" />
         </svg>
       ),
-      href: "https://github.com",
+      href: "https://github.com/Shazzadhossensunny",
     },
     {
       icon: (
@@ -49,9 +49,12 @@ const Footer = () => {
           <circle cx="4" cy="4" r="2" />
         </svg>
       ),
-      href: "https://linkedin.com",
+      href: "https://www.linkedin.com/in/shazzadhossensunny",
     },
-    { icon: <Mail className="h-5 w-5" />, href: "mailto:your@email.com" },
+    {
+      icon: <Mail className="h-5 w-5" />,
+      href: "mailto:shazzadhossensunny@gmail.com",
+    },
   ];
 
   return (
@@ -94,9 +97,9 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
             <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-              <li>Location: Your City, Country</li>
-              <li>Email: your@email.com</li>
-              <li>Phone: +1 234 567 890</li>
+              <li>Location: Dhaka, Bangladesh</li>
+              <li>Email: shazzadhossensunny@gmail.com</li>
+              <li>Phone: +8801831660652</li>
             </ul>
           </div>
 
@@ -122,7 +125,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
-          <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-center items-center">
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -131,7 +134,7 @@ const Footer = () => {
             >
               © {new Date().getFullYear()} Shazzad Hossen. All rights reserved.
             </motion.p>
-            <motion.p
+            {/* <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -139,7 +142,7 @@ const Footer = () => {
             >
               Made with <Heart className="h-4 w-4 mx-1 text-red-500" /> using
               Next.js & Tailwind CSS
-            </motion.p>
+            </motion.p> */}
           </div>
         </div>
       </div>

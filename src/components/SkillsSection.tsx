@@ -9,14 +9,14 @@ const SkillsSection = () => {
       name: "Frontend Development",
       level: 90,
       color: "from-purple-600 to-pink-600",
-      tools: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+      tools: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Bootstrap"],
     },
     {
       icon: <Command className="h-8 w-8" />,
       name: "UI/UX Design",
-      level: 85,
+      level: 55,
       color: "from-blue-600 to-cyan-600",
-      tools: ["Figma", "Adobe XD", "Responsive Design", "Wireframing"],
+      tools: ["Figma", "Responsive Design"],
     },
     {
       icon: <Globe className="h-8 w-8" />,
@@ -30,7 +30,7 @@ const SkillsSection = () => {
       name: "Database",
       level: 75,
       color: "from-orange-600 to-red-600",
-      tools: ["MongoDB", "PostgreSQL", "Firebase", "Redis"],
+      tools: ["MongoDB", "Mongoose", "Firebase"],
     },
     {
       icon: <Server className="h-8 w-8" />,
@@ -44,7 +44,7 @@ const SkillsSection = () => {
       name: "Version Control",
       level: 85,
       color: "from-indigo-600 to-purple-600",
-      tools: ["Git", "GitHub", "GitLab", "Bitbucket"],
+      tools: ["Git", "GitHub", "GitLab"],
     },
   ];
 

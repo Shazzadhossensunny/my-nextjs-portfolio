@@ -13,3 +13,15 @@ export const sendMessageToUser = async (data: TMessageOnlyDataSend) => {
   const messageInfo = await res.json();
   return messageInfo;
 };
+
+export const getAllProjects = async () => {
+  const res = fetch(`${process.env.BACKEND_URL}/project`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  });
+  const data = (await res).json();
+  return data;
+};

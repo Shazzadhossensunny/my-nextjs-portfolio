@@ -2,9 +2,18 @@
 import { motion } from "framer-motion";
 import { Download, Code, Laptop, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import BannerImg from "../assets/images/shazzad.png";
+import Image from "next/image";
 
 const HeroSection = () => {
-  const technologies = ["React", "Next.js", "Tailwind CSS", "TypeScript"];
+  const technologies = [
+    "React",
+    "Next.js",
+    "Tailwind CSS",
+    "TypeScript",
+    "JavaScript",
+  ];
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
@@ -62,16 +71,23 @@ const HeroSection = () => {
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-violet-600 hover:bg-violet-700">
-                <Download className="mr-2 h-4 w-4" /> Download Resume
-              </Button>
+              <Link
+                href="https://github.com/Shazzadhossensunny"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button size="lg" className="bg-violet-600 hover:bg-violet-700">
+                  <Download className="mr-2 h-4 w-4" /> Download Resume
+                </Button>
+              </Link>
 
               <div className="flex gap-4">
                 <motion.a
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  href="#"
+                  href="https://github.com/Shazzadhossensunny"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:shadow-lg transition-shadow"
                 >
                   <svg
@@ -93,8 +109,9 @@ const HeroSection = () => {
                 <motion.a
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  href="#"
+                  href="https://www.linkedin.com/in/shazzadhossensunny"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:shadow-lg transition-shadow"
                 >
                   <svg
@@ -126,8 +143,9 @@ const HeroSection = () => {
           >
             <div className="w-full h-[500px] rounded-3xl overflow-hidden relative shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-br from-violet-500/20 to-indigo-500/20 backdrop-blur-sm"></div>
-              <img
-                src="/api/placeholder/600/500"
+              <Image
+                src={BannerImg}
+                fill
                 alt="Shazzad Hossen"
                 className="w-full h-full object-cover"
               />

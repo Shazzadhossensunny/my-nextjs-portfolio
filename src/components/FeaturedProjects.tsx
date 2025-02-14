@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const FeaturedProjects = () => {
   const projects = [
@@ -10,7 +11,7 @@ const FeaturedProjects = () => {
       description:
         "A comprehensive dashboard for managing online stores with real-time analytics and inventory management.",
       image: "/api/placeholder/600/400",
-      tags: ["Next.js", "TypeScript", "Tailwind CSS", "Redux"],
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Redux"],
       liveLink: "https://project1.com",
       githubLink: "https://github.com/project1",
     },
@@ -19,7 +20,7 @@ const FeaturedProjects = () => {
       description:
         "Modern social networking platform with real-time chat, post sharing, and user interactions.",
       image: "/api/placeholder/600/400",
-      tags: ["React", "Node.js", "Socket.io", "MongoDB"],
+      technologies: ["React", "Node.js", "Socket.io", "MongoDB"],
       liveLink: "https://project2.com",
       githubLink: "https://github.com/project2",
     },
@@ -28,7 +29,7 @@ const FeaturedProjects = () => {
       description:
         "AI-powered application for generating marketing content and social media posts.",
       image: "/api/placeholder/600/400",
-      tags: ["Next.js", "OpenAI", "Tailwind CSS", "Firebase"],
+      technologies: ["Next.js", "OpenAI", "Tailwind CSS", "Firebase"],
       liveLink: "https://project3.com",
       githubLink: "https://github.com/project3",
     },
@@ -53,14 +54,15 @@ const FeaturedProjects = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
+          {projects?.map((project, index) => (
             <motion.div
               key={project.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
-              className="group relative bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden"
+              className="group relative bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300"
+              // onClick={() => handleProjectClick(project._id)}
             >
               <div className="relative h-48 overflow-hidden">
                 <img
@@ -74,30 +76,10 @@ const FeaturedProjects = () => {
                       size="sm"
                       variant="outline"
                       className="bg-white/90 hover:bg-white"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-github"
-                      >
-                        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                        <path d="M9 18c-4.51 2-5-2-7-2" />
-                      </svg>
-                      Code
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="bg-purple-600 hover:bg-purple-700"
+                      // onClick={(e) => handleButtonClick(e, project.links?.live)}
                     >
                       <ExternalLink className="h-4 w-4 mr-2" />
-                      Demo
+                      Live Link
                     </Button>
                   </div>
                 </div>
@@ -109,12 +91,12 @@ const FeaturedProjects = () => {
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
+                  {project.technologies?.map((tech) => (
                     <span
-                      key={tag}
+                      key={tech}
                       className="px-3 py-1 text-sm bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full"
                     >
-                      {tag}
+                      {tech}
                     </span>
                   ))}
                 </div>
@@ -129,13 +111,15 @@ const FeaturedProjects = () => {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <Button
-            size="lg"
-            variant="outline"
-            className="bg-white dark:bg-gray-800"
-          >
-            View All Projects
-          </Button>
+          <Link href="/projects">
+            <Button
+              size="lg"
+              variant="outline"
+              className="bg-white dark:bg-gray-800"
+            >
+              View All Projects
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>

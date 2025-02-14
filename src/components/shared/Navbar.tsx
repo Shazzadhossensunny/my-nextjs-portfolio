@@ -5,6 +5,8 @@ import { Menu, X, Moon, Sun, LogIn, LayoutDashboard } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
+import LogoImg from "../../assets/images/logo_sunny.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +61,7 @@ const Navbar = () => {
               href="/"
               className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text"
             >
-              Portfolio
+              <Image src={LogoImg} alt="Shazzad" width={150} height={150} />
             </Link>
           </motion.div>
 
