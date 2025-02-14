@@ -1,5 +1,4 @@
 "use server";
-
 import { TMessageOnlyDataSend } from "@/app/(commonLayout)/contact/page";
 
 export const sendMessageToUser = async (data: TMessageOnlyDataSend) => {

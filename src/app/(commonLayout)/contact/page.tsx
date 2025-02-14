@@ -144,7 +144,7 @@ const ContactPage = () => {
                   <label className="text-sm font-medium">Name</label>
                   <Input
                     {...register("name")}
-                    placeholder="John Doe"
+                    placeholder="Write name here"
                     className={errors.name ? "border-red-500" : ""}
                   />
                   {errors.name && (
@@ -159,7 +159,7 @@ const ContactPage = () => {
                   <Input
                     {...register("email")}
                     type="email"
-                    placeholder="john@example.com"
+                    placeholder="Write email here"
                     className={errors.email ? "border-red-500" : ""}
                   />
                   {errors.email && (
