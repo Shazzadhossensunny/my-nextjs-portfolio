@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import BannerImg from "../assets/images/shazzad.png";
 import Image from "next/image";
+import { TypeAnimation } from "react-type-animation";
 
 const HeroSection = () => {
   const technologies = [
@@ -38,9 +39,13 @@ const HeroSection = () => {
 
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Hey, I'm{" "}
-              <span className="bg-gradient-to-r from-violet-600 to-indigo-600 text-transparent bg-clip-text">
-                Shazzad Hossen
-              </span>
+              <TypeAnimation
+                sequence={["Shazzad Hossen", 5000, "Frontend Developer", 3000]}
+                wrapper="span"
+                speed={20}
+                repeat={Infinity}
+                className="bg-gradient-to-r from-violet-600 to-indigo-600 text-transparent bg-clip-text"
+              />
             </h1>
 
             <div className="flex items-center gap-2 mb-6">
@@ -72,7 +77,7 @@ const HeroSection = () => {
 
             <div className="flex flex-wrap gap-4">
               <Link
-                href="https://github.com/Shazzadhossensunny"
+                href="https://drive.google.com/file/d/1dPUv0WnDlkiHhClBkok1-9I-ujyTCasx/view?usp=drive_link"
                 target="_blank"
                 rel="noopener noreferrer"
               >

@@ -124,7 +124,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, userProfile }) => {
   };
 
   const handleLogout = async () => {
-    await signOut();
+    await signOut({ callbackUrl: "/" });
   };
 
   return (

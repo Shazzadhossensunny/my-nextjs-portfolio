@@ -39,8 +39,7 @@ const ProjectsPage: React.FC<ProjectsProps> = ({ projects, isLoading }) => {
             My Projects
           </h1>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            A collection of my work showcasing my skills in web development,
-            mobile apps, and UI/UX design.
+            A collection of my work showcasing my skills in web development
           </p>
         </motion.div>
 

@@ -6,12 +6,14 @@ import { useTheme } from "next-themes";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import LogoImg from "../../assets/images/logo_sunny.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const { status } = useSession();
+  const pathname = usePathname();
 
   const menuItems = [
     { title: "Home", href: "/" },
@@ -23,6 +25,12 @@ const Navbar = () => {
   const menuVariants = {
     open: { opacity: 1, x: 0 },
     closed: { opacity: 0, x: "100%" },
+  };
+
+  const isActive = (path: any) => {
+    if (path === "/" && pathname === "/") return true;
+    if (path !== "/" && pathname.startsWith(path)) return true;
+    return false;
   };
 
   const AuthButton = () => {
@@ -76,11 +84,25 @@ const Navbar = () => {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
+                  className="relative"
                 >
                   <Link
                     href={item.href}
-                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 transition-colors"
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                      isActive(item.href)
+                        ? "text-white"
+                        : "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
+                    }`}
                   >
+                    {isActive(item.href) && (
+                      <motion.span
+                        layoutId="activeMenuItem"
+                        className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-md -z-10"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
                     {item.title}
                   </Link>
                 </motion.div>
@@ -123,14 +145,27 @@ const Navbar = () => {
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {menuItems.map((item) => (
-            <Link
-              key={item.title}
-              href={item.href}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
-              onClick={() => setIsOpen(false)}
-            >
-              {item.title}
-            </Link>
+            <div key={item.title} className="relative">
+              <Link
+                href={item.href}
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  isActive(item.href)
+                    ? "text-white relative z-10"
+                    : "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                {isActive(item.href) && (
+                  <motion.span
+                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-md -z-10"
+                    layoutId="activeMobileMenuItem"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  />
+                )}
+                {item.title}
+              </Link>
+            </div>
           ))}
 
           {/* Mobile Auth Button */}
