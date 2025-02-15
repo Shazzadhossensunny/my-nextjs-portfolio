@@ -4,22 +4,21 @@ import { ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ProjectsProps } from "@/types/project.type";
-import { useRouter } from "next/navigation";
 import LoadingPage from "@/app/loading";
 import Link from "next/link";
 
 const ProjectsPage: React.FC<ProjectsProps> = ({ projects, isLoading }) => {
-  const router = useRouter();
+  // const router = useRouter();
 
-  const handleProjectClick = (projectId: string) => {
-    router.push(`/projects/${projectId}`);
-  };
-  const handleButtonClick = (e: React.MouseEvent, link?: string) => {
-    e.stopPropagation();
-    if (link) {
-      window.open(link, "_blank");
-    }
-  };
+  // const handleProjectClick = (projectId: string) => {
+  //   router.push(`/projects/${projectId}`);
+  // };
+  // const handleButtonClick = (e: React.MouseEvent, link?: string) => {
+  //   e.stopPropagation();
+  //   if (link) {
+  //     window.open(link, "_blank");
+  //   }
+  // };
   if (isLoading) {
     return (
       <div className="min-h-[400px] flex items-center justify-center">
@@ -28,7 +27,7 @@ const ProjectsPage: React.FC<ProjectsProps> = ({ projects, isLoading }) => {
     );
   }
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <motion.div

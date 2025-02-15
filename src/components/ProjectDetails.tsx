@@ -12,8 +12,6 @@ interface ProjectDetailProps {
 }
 
 const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
-  console.log(project);
-
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -21,7 +19,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-20">
       {/* Hero Section */}
       <motion.div
         className="relative h-[40vh] md:h-[60vh] w-full"

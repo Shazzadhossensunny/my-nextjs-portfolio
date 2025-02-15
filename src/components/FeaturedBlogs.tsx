@@ -3,41 +3,10 @@ import { motion } from "framer-motion";
 import { Calendar, Clock, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { BlogsProps } from "@/types/blog.type";
+import Image from "next/image";
 
-const FeaturedBlogs = () => {
-  const featuredPosts = [
-    {
-      title: "Building Scalable React Applications with TypeScript",
-      excerpt:
-        "Learn how to structure large-scale React applications using TypeScript and modern best practices...",
-      date: "2024-02-10",
-      readTime: "8 min read",
-      category: "React",
-      image: "/api/placeholder/800/400",
-      slug: "building-scalable-react-applications",
-    },
-    {
-      title: "The Future of Web Development with Next.js 14",
-      excerpt:
-        "Explore the latest features and improvements in Next.js 14 and how they revolutionize web development...",
-      date: "2024-02-08",
-      readTime: "6 min read",
-      category: "Next.js",
-      image: "/api/placeholder/800/400",
-      slug: "future-of-web-development-nextjs",
-    },
-    {
-      title: "Modern UI Design Patterns with Tailwind CSS",
-      excerpt:
-        "Discover how to implement modern UI patterns efficiently using Tailwind CSS and best practices...",
-      date: "2024-02-06",
-      readTime: "7 min read",
-      category: "UI/UX",
-      image: "/api/placeholder/800/400",
-      slug: "modern-ui-design-patterns",
-    },
-  ];
-
+const FeaturedBlogs: React.FC<BlogsProps> = ({ blogs, isLoading }) => {
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -76,22 +45,25 @@ const FeaturedBlogs = () => {
           animate="show"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
         >
-          {featuredPosts.map((post) => (
+          {blogs?.data?.slice(0, 3).map((blog) => (
             <motion.article
-              key={post.slug}
+              key={blog._id}
               variants={item}
               className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
             >
-              <Link href={`/blog/${post.slug}`} className="block">
+              <Link href={`/blog/${blog._id}`} className="block">
                 <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt={post.title}
+                  <Image
+                    src={blog.image}
+                    alt={blog.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                   />
                   <div className="absolute top-4 right-4">
                     <span className="px-3 py-1 bg-purple-600 text-white text-sm rounded-full">
-                      {post.category}
+                      {blog.category}
                     </span>
                   </div>
                 </div>
@@ -100,20 +72,20 @@ const FeaturedBlogs = () => {
                   <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
                     <span className="flex items-center">
                       <Calendar className="h-4 w-4 mr-1" />
-                      {new Date(post.date).toLocaleDateString()}
+                      {new Date(blog.date).toLocaleDateString()}
                     </span>
                     <span className="flex items-center">
                       <Clock className="h-4 w-4 mr-1" />
-                      {post.readTime}
+                      {blog.readTime}
                     </span>
                   </div>
 
                   <h3 className="text-xl font-semibold mb-3 hover:text-purple-600 transition-colors">
-                    {post.title}
+                    {blog.title}
                   </h3>
 
                   <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
-                    {post.excerpt}
+                    {blog.excerpt}
                   </p>
 
                   <div className="flex items-center text-purple-600 dark:text-purple-400">

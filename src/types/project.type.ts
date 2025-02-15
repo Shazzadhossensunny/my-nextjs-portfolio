@@ -19,7 +19,7 @@ export interface Project {
   createdAt: string;
   updatedAt: string;
 }
-
+//multipole project
 export interface ProjectsResponses {
   success?: boolean;
   data: Project[];

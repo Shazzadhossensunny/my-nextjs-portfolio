@@ -1,31 +1,20 @@
-"use client";
-
-import { useGetSingleBlogQuery } from "@/redux/features/blogs/blogApi";
 import { format } from "date-fns";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { Calendar, Clock } from "lucide-react";
-import LoadingPage from "../loading";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 import { Components } from "react-markdown";
+import { TBlog } from "@/types/blog.type";
 
-export default function SingleBlogPage() {
-  const params = useParams();
-  const id = params.id;
-  const { data: blogData, isLoading } = useGetSingleBlogQuery(id);
+interface BlogDetailProps {
+  blog: TBlog;
+}
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <LoadingPage />
-      </div>
-    );
-  }
-
+const BlogDetails: React.FC<BlogDetailProps> = ({ blog }) => {
   // Format date safely
   const formatDate = (dateString?: string) => {
     if (!dateString) return "Unknown date";
@@ -90,54 +79,57 @@ export default function SingleBlogPage() {
       </blockquote>
     ),
   };
-
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-      {/* Blog Title & Info */}
-      <div className="space-y-4">
-        <h1 className="text-4xl font-bold">{blogData?.data.title}</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300">
-          {blogData?.data.excerpt}
-        </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-20">
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Blog Title & Info */}
+        <div className="space-y-4">
+          <h1 className="text-4xl font-bold">{blog.title}</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            {blog.excerpt}
+          </p>
 
-        <div className="flex items-center gap-6 text-sm text-gray-500 dark:text-gray-400">
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            <span>{formatDate(blogData?.data.date)}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4" />
-            <span>{blogData?.data.readTime} min read</span>
-          </div>
-          <div className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
-            {blogData?.data.category}
+          <div className="flex items-center gap-6 text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              <span>{formatDate(blog.date)}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              <span>{blog.readTime} min read</span>
+            </div>
+            <div className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
+              {blog.category}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Blog Image */}
-      <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
-        <Image
-          src={blogData?.data.image}
-          alt={blogData?.data.title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-        />
-      </div>
+        {/* Blog Image */}
+        <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
+          <Image
+            src={blog.image}
+            alt={blog.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+          />
+        </div>
 
-      {/* Blog Content with Markdown Rendering */}
-      <article className="prose prose-lg dark:prose-invert max-w-none">
-        <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-          {blogData?.data.content ? prepareContent(blogData.data.content) : ""}
-        </ReactMarkdown>
-      </article>
+        {/* Blog Content with Markdown Rendering */}
+        <article className="prose prose-lg dark:prose-invert max-w-none">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+            {blog.content ? prepareContent(blog.content) : ""}
+          </ReactMarkdown>
+        </article>
 
-      {/* Footer Metadata */}
-      <div className="border-t pt-6 mt-8 text-sm text-gray-500 dark:text-gray-400 space-y-2">
-        <p>Last updated: {formatDate(blogData?.data.updatedAt)}</p>
-        <p>Published: {formatDate(blogData?.data.createdAt)}</p>
+        {/* Footer Metadata */}
+        <div className="border-t pt-6 mt-8 text-sm text-gray-500 dark:text-gray-400 space-y-2">
+          <p>Last updated: {formatDate(blog.updatedAt)}</p>
+          <p>Published: {formatDate(blog.createdAt)}</p>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default BlogDetails;

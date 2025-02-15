@@ -1,7 +1,7 @@
 import { baseApi } from "@/redux/api/baseApi";
 
 import { TQueryParam, TResponseRedux } from "@/types/global.type";
-import { TProject } from "@/types/project.type";
+import { Project } from "@/types/project.type";
 
 const projectApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,7 +21,7 @@ const projectApi = baseApi.injectEndpoints({
       },
       providesTags: ["Project"],
 
-      transformResponse: (response: TResponseRedux<TProject[]>) => {
+      transformResponse: (response: TResponseRedux<Project[]>) => {
         return {
           data: response.data,
           meta: response.meta,
