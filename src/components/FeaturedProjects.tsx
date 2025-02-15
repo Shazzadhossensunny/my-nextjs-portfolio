@@ -47,7 +47,7 @@ const FeaturedProjects: React.FC<ProjectsProps> = ({ projects, isLoading }) => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {projects?.data?.map((project, index) => (
+          {projects?.data?.slice(0, 3).map((project, index) => (
             <motion.div
               key={project._id}
               initial={{ opacity: 0, y: 20 }}
@@ -91,7 +91,7 @@ const FeaturedProjects: React.FC<ProjectsProps> = ({ projects, isLoading }) => {
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {project.technologies?.map((tech) => (
+                  {project.technologies?.slice(0, 3).map((tech) => (
                     <span
                       key={tech}
                       className="px-3 py-1 text-sm bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full"
@@ -99,6 +99,11 @@ const FeaturedProjects: React.FC<ProjectsProps> = ({ projects, isLoading }) => {
                       {tech.trim()}
                     </span>
                   ))}
+                  {project.technologies.length > 3 && (
+                    <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-sm">
+                      +{project.technologies.length - 3} more
+                    </span>
+                  )}
                 </div>
               </div>
             </motion.div>

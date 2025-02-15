@@ -15,7 +15,7 @@ export const sendMessageToUser = async (data: TMessageOnlyDataSend) => {
   return messageInfo;
 };
 
-export const getAllProjects = async (): Promise<ProjectsResponses> => {
+export const getFeatureProjects = async (): Promise<ProjectsResponses> => {
   try {
     const res = await fetch(`${process.env.BACKEND_URL}/project`, {
       method: "GET",
@@ -23,6 +23,27 @@ export const getAllProjects = async (): Promise<ProjectsResponses> => {
         "Content-Type": "application/json",
       },
       next: { revalidate: 30 },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch projects");
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    return { data: [] };
+  }
+};
+export const getAllProjects = async (): Promise<ProjectsResponses> => {
+  try {
+    const res = await fetch(`${process.env.BACKEND_URL}/project`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
     });
 
     if (!res.ok) {

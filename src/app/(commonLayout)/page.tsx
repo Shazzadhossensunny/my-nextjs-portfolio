@@ -2,10 +2,10 @@ import FeaturedBlogs from "@/components/FeaturedBlogs";
 import FeaturedProjects from "@/components/FeaturedProjects";
 import HeroSection from "@/components/HeroSection";
 import SkillsSection from "@/components/SkillsSection";
-import { getAllProjects } from "@/utils/actions/sendMessageUser";
+import { getFeatureProjects } from "@/utils/actions/sendMessageUser";
 
 const HomePage = async () => {
-  const projects = await getAllProjects();
+  const projects = await getFeatureProjects();
   return (
     <div>
       <HeroSection />
