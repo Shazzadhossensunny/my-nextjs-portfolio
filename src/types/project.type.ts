@@ -20,12 +20,18 @@ export interface Project {
   updatedAt: string;
 }
 
-export interface ProjectsResponse {
+export interface ProjectsResponses {
   success?: boolean;
   data: Project[];
 }
 
+// Response for single project
+export interface ProjectResponse {
+  success?: boolean;
+  data: Project;
+}
+
 export interface ProjectsProps {
-  projects: ProjectsResponse;
+  projects: ProjectsResponses;
   isLoading: boolean;
 }

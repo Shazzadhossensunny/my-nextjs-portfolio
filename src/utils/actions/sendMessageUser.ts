@@ -1,6 +1,6 @@
 "use server";
 import { TMessageOnlyDataSend } from "@/app/(commonLayout)/contact/page";
-import { ProjectsResponse } from "@/types/project.type";
+import { ProjectsResponses, ProjectResponse } from "@/types/project.type";
 
 export const sendMessageToUser = async (data: TMessageOnlyDataSend) => {
   const res = await fetch(`${process.env.BACKEND_URL}/message`, {
@@ -15,7 +15,7 @@ export const sendMessageToUser = async (data: TMessageOnlyDataSend) => {
   return messageInfo;
 };
 
-export const getAllProjects = async (): Promise<ProjectsResponse> => {
+export const getAllProjects = async (): Promise<ProjectsResponses> => {
   try {
     const res = await fetch(`${process.env.BACKEND_URL}/project`, {
       method: "GET",
@@ -34,5 +34,27 @@ export const getAllProjects = async (): Promise<ProjectsResponse> => {
   } catch (error) {
     console.error("Error fetching projects:", error);
     return { data: [] };
+  }
+};
+
+export const getProjectById = async (id: string): Promise<ProjectResponse> => {
+  try {
+    const res = await fetch(`${process.env.BACKEND_URL}/project/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch project");
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching project:", error);
+    throw error;
   }
 };
