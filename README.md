@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Portfolio & Blog Website
 
-## Getting Started
+🚀 **Live Site:** [My Portfolio](https://my-nextjs-portfolio-murex.vercel.app/)
 
-First, run the development server:
+## 📌 Project Overview
+
+This is a **personal portfolio and blog website** built with Next.js, TypeScript, and Tailwind CSS. It features a clean, modern design with role-based authentication and a dashboard for managing projects, blogs, and messages.
+
+## ✨ Features
+
+### Public Pages:
+
+- **Home Page:** Introduction, skills, and technologies used.
+- **Projects Page:** Showcases projects with details.
+- **Blog Page:** Displays blog posts with content.
+- **Contact Page:** Contact form to receive messages.
+
+### Dashboard Features (Authenticated Users Only):
+
+- **Project Management:**
+  - Create a new project
+  - View all projects
+  - Update project details
+  - Delete projects
+- **Blog Management:**
+  - Create a new blog post
+  - View all blogs
+  - Update blog details (except slug)
+  - Delete blog posts
+- **Message Management:**
+  - View all messages
+  - Mark messages as read/unread
+  - Delete messages
+
+## 🏗 Tech Stack
+
+- **Frontend:** Next.js, TypeScript, Tailwind CSS, Framer Motion
+- **State Management:** Redux Toolkit (RTK Query)
+- **Authentication:** NextAuth (Google, GitHub OAuth)
+- **Backend:** Node.js, Express.js, MongoDB
+- **Deployment:** Vercel
+
+````
+
+## 🛠 Setup & Installation
+### 1️⃣ Clone the Repository
+```bash
+git clone  https://github.com/Shazzadhossensunny/my-nextjs-portfolio
+cd my-nextjs-portfolio
+````
+
+### 2️⃣ Install Dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install  # or npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3️⃣ Set Up Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file and add:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXTAUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+```
 
-## Learn More
+### 4️⃣ Start Development Server
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+yarn dev  # or npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is deployed on **Vercel**. To deploy manually:
 
-## Deploy on Vercel
+```bash
+git push origin main  # Push latest changes
+yarn build            # Build production-ready app
+vercel deploy         # Deploy to Vercel
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+🔹 **Developed by [Shazzad Hossen](https://my-nextjs-portfolio-murex.vercel.app/)**

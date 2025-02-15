@@ -28,12 +28,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { TProject } from "@/types/project.type";
 import LoadingPage from "../loading";
+import { Project } from "@/types/project.type";
 
 export default function ProjectForm() {
   const [createProject, { isLoading }] = useCreateProjectMutation();
-  const methods = useForm<TProject>({
+  const methods = useForm<Project>({
     defaultValues: {
       title: "",
       description: "",
@@ -68,7 +68,7 @@ export default function ProjectForm() {
     }
   };
 
-  const addToArray = (field: keyof TProject, value: string) => {
+  const addToArray = (field: keyof Project, value: string) => {
     const currentValues = getValues(field);
     const updatedValues = Array.isArray(currentValues)
       ? [...currentValues, value]
@@ -80,7 +80,7 @@ export default function ProjectForm() {
     if (field === "technologies") setNewTechnology("");
   };
 
-  const removeFromArray = (field: keyof TProject, index: number) => {
+  const removeFromArray = (field: keyof Project, index: number) => {
     const currentValues = getValues(field);
     if (Array.isArray(currentValues)) {
       setValue(
@@ -159,7 +159,7 @@ export default function ProjectForm() {
                   </Button>
                 </div>
                 <div className="space-y-2">
-                  {watch("coreFeatures").map((item, index) => (
+                  {watch("coreFeatures")?.map((item, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <span className="flex-1 truncate">{item}</span>
                       <Button
@@ -249,7 +249,7 @@ export default function ProjectForm() {
                   </Button>
                 </div>
                 <div className="space-y-2">
-                  {watch("gallery").map((url, index) => (
+                  {watch("gallery")?.map((url, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <span className="flex-1 truncate">{url}</span>
                       <Button

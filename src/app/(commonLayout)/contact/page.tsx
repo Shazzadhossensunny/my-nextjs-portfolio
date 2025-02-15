@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { sendMessageToUser } from "@/utils/actions/sendMessageUser";
-import { TResponse } from "@/types/global.type";
 import toast from "react-hot-toast";
 
 export interface TMessageOnlyDataSend {
@@ -26,7 +25,6 @@ const ContactPage = () => {
   } = useForm();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
     try {
       const res = await sendMessageToUser(data as TMessageOnlyDataSend);
       if (res.success) {

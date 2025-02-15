@@ -32,7 +32,8 @@ const LoginPage = () => {
               className="w-full bg-white/10 hover:bg-white/20 text-white border-white/20"
               onClick={() =>
                 signIn("google", {
-                  callbackUrl: "http://localhost:3000/dashboard",
+                  callbackUrl:
+                    "https://my-nextjs-portfolio-murex.vercel.app/dashboard",
                 })
               }
             >
@@ -45,7 +46,8 @@ const LoginPage = () => {
               className="w-full bg-white/10 hover:bg-white/20 text-white border-white/20"
               onClick={() =>
                 signIn("github", {
-                  callbackUrl: "http://localhost:3000/dashboard",
+                  callbackUrl:
+                    "https://my-nextjs-portfolio-murex.vercel.app/dashboard",
                 })
               }
             >

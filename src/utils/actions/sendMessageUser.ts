@@ -45,7 +45,7 @@ export const getAllProjects = async (): Promise<ProjectsResponses> => {
       headers: {
         "Content-Type": "application/json",
       },
-      cache: "no-cache",
+      next: { revalidate: 30 },
     });
 
     if (!res.ok) {
@@ -67,7 +67,7 @@ export const getProjectById = async (id: string): Promise<ProjectResponse> => {
       headers: {
         "Content-Type": "application/json",
       },
-      cache: "no-store",
+      next: { revalidate: 30 },
     });
 
     if (!res.ok) {
@@ -112,7 +112,7 @@ export const getAllBlogs = async (): Promise<BlogsResponses> => {
       headers: {
         "Content-Type": "application/json",
       },
-      cache: "no-cache",
+      next: { revalidate: 30 },
     });
 
     if (!res.ok) {
@@ -134,7 +134,7 @@ export const getBlogById = async (id: string): Promise<BlogResponse> => {
       headers: {
         "Content-Type": "application/json",
       },
-      cache: "no-store",
+      next: { revalidate: 30 },
     });
 
     if (!res.ok) {

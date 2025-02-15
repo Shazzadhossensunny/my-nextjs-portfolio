@@ -43,7 +43,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { TProject } from "@/types/project.type";
+import { Project } from "@/types/project.type";
 import {
   useDeleteProjectMutation,
   useGetAllProjectQuery,
@@ -53,13 +53,13 @@ import { TResponse } from "@/types/global.type";
 
 const ProjectListPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<TProject | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const { data: projectsData, isLoading } = useGetAllProjectQuery(undefined);
   const [updateProject] = useUpdateProjectMutation();
   const [deleteProject] = useDeleteProjectMutation();
 
-  const form = useForm<TProject>({
+  const form = useForm<Project>({
     defaultValues: {
       title: "",
       description: "",
@@ -78,7 +78,7 @@ const ProjectListPage = () => {
     },
   });
 
-  const handleEdit = (project: TProject) => {
+  const handleEdit = (project: Project) => {
     setSelectedProject(project);
     form.reset({
       title: project.title,
@@ -123,7 +123,7 @@ const ProjectListPage = () => {
   const handleDelete = async (id: string) => {
     const toastId = toast.loading("Deleting project...");
     try {
-      const res = (await deleteProject(id)) as TResponse<TProject>;
+      const res = (await deleteProject(id)) as TResponse<Project>;
       if (res.error) {
         toast.error(res?.error?.data.message, { id: toastId });
       } else {
@@ -181,7 +181,7 @@ const ProjectListPage = () => {
                 <TableCell>
                   <div className="flex space-x-2">
                     <Link
-                      href={project?.links?.live}
+                      href={project.links.live as string}
                       className="text-gray-500 hover:text-gray-700"
                     >
                       <ExternalLink className="h-5 w-5" />
