@@ -1,24 +1,31 @@
-export type TProject = {
-  links: TLinks;
+export interface ProjectLinks {
+  github: {
+    frontend?: string;
+    backend?: string;
+  };
+  live?: string;
+}
+
+export interface Project {
   _id: string;
   title: string;
   description: string;
-  overview: string;
+  overview?: string;
   image: string;
-  gallery: string[];
-  coreFeatures: string[];
+  gallery?: string[];
+  coreFeatures?: string[];
   technologies: string[];
+  links: ProjectLinks;
   createdAt: string;
   updatedAt: string;
-  __v: number;
-};
+}
 
-export type TLinks = {
-  github: TGithub;
-  live: string;
-};
+export interface ProjectsResponse {
+  success?: boolean;
+  data: Project[];
+}
 
-export type TGithub = {
-  frontend: string;
-  backend: string;
-};
+export interface ProjectsProps {
+  projects: ProjectsResponse;
+  isLoading: boolean;
+}

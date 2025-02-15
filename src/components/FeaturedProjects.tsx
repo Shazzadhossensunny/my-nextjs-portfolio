@@ -3,37 +3,30 @@ import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ProjectsProps } from "@/types/project.type";
+import LoadingPage from "@/app/loading";
 
-const FeaturedProjects = () => {
-  const projects = [
-    {
-      title: "E-Commerce Dashboard",
-      description:
-        "A comprehensive dashboard for managing online stores with real-time analytics and inventory management.",
-      image: "/api/placeholder/600/400",
-      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Redux"],
-      liveLink: "https://project1.com",
-      githubLink: "https://github.com/project1",
-    },
-    {
-      title: "Social Media Platform",
-      description:
-        "Modern social networking platform with real-time chat, post sharing, and user interactions.",
-      image: "/api/placeholder/600/400",
-      technologies: ["React", "Node.js", "Socket.io", "MongoDB"],
-      liveLink: "https://project2.com",
-      githubLink: "https://github.com/project2",
-    },
-    {
-      title: "AI Content Generator",
-      description:
-        "AI-powered application for generating marketing content and social media posts.",
-      image: "/api/placeholder/600/400",
-      technologies: ["Next.js", "OpenAI", "Tailwind CSS", "Firebase"],
-      liveLink: "https://project3.com",
-      githubLink: "https://github.com/project3",
-    },
-  ];
+const FeaturedProjects: React.FC<ProjectsProps> = ({ projects, isLoading }) => {
+  const router = useRouter();
+
+  const handleProjectClick = (projectId: string) => {
+    router.push(`/projects/${projectId}`);
+  };
+  const handleButtonClick = (e: React.MouseEvent, link?: string) => {
+    e.stopPropagation();
+    if (link) {
+      window.open(link, "_blank");
+    }
+  };
+  if (isLoading) {
+    return (
+      <div className="min-h-[400px] flex items-center justify-center">
+        <LoadingPage />
+      </div>
+    );
+  }
 
   return (
     <section className="py-20 bg-white dark:bg-gray-900">
@@ -54,40 +47,47 @@ const FeaturedProjects = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {projects?.map((project, index) => (
+          {projects?.data?.map((project, index) => (
             <motion.div
-              key={project.title}
+              key={project._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
-              className="group relative bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300"
-              // onClick={() => handleProjectClick(project._id)}
+              className="group relative bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300"
+              onClick={() => handleProjectClick(project._id)}
             >
               <div className="relative h-48 overflow-hidden">
-                <img
-                  src={project.image}
+                <Image
+                  src={project?.image}
                   alt={project.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="absolute bottom-4 left-4 right-4 flex justify-end gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="bg-white/90 hover:bg-white"
-                      // onClick={(e) => handleButtonClick(e, project.links?.live)}
-                    >
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Live Link
-                    </Button>
+                    {project.links?.live && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="bg-white/90 hover:bg-white"
+                        onClick={(e) =>
+                          handleButtonClick(e, project.links.live)
+                        }
+                      >
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Live Demo
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>
 
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -96,7 +96,7 @@ const FeaturedProjects = () => {
                       key={tech}
                       className="px-3 py-1 text-sm bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full"
                     >
-                      {tech}
+                      {tech.trim()}
                     </span>
                   ))}
                 </div>
