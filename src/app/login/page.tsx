@@ -17,7 +17,7 @@ const LoginPage = () => {
 
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center text-white">
-            Welcome back
+            Welcome 
           </CardTitle>
           <p className="text-slate-300 text-center">
             Sign in to your account to continue
