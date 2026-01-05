@@ -69,7 +69,7 @@ const Navbar = () => {
               href="/"
               className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text"
             >
-              <Image src={LogoImg} alt="Shazzad" width={150} height={150} />
+              <Image src={LogoImg} alt="Shazzad Hossen Sunny" width={150} height={150} />
             </Link>
           </motion.div>
 
