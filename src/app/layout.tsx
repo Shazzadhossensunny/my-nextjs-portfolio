@@ -12,7 +12,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Shazzad Hossen - Frontend Developer",
+  title: "Shazzad Hossen Sunny - Frontend Developer",
   description:
     "Frontend developer specialized in React, Next.js, and modern web technologies",
 };
